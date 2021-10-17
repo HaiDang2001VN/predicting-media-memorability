@@ -3,20 +3,21 @@ import numpy as np
 import pickle
 import os
 
-from feature_models.vggish import vggish_input, vggish_params, vggish_slim
+# from feature_models.vggish import vggish_input, vggish_params, vggish_slim
 import features.config as fconf
 from features.audio import extract_VGGish_features
 from features.image import extract_resnet152_features
 from features.text import fit_tokenizer, extract_GLoVe_features
 from features.emotion import extract_emotions
 
-DATASETS = ["training_set", "development_set", "testing_set"]
+# DATASETS = ["training_set", "development_set", "testing_set"]
+DATASETS = ["training_set", "testing_set"]
 CAPTION_FILES = {
-    "training_set": "text_descriptions.csv",
-    "development_set": "dev_text_descriptions.csv",
+    "training_set": "train_text_descriptions.csv",
+    # "development_set": "dev_text_descriptions.csv",
     "testing_set": "test_text_descriptions.csv"
 }
-FEATURE_MODEL_DIR = "feature_models/"
+FEATURE_MODEL_DIR = "features/"
 
 
 def get_boolean_input(prompt):
@@ -101,22 +102,22 @@ def extract_features(
                 image_dir=frame_dir, features_dir=feature_dir)
         print("Finished ResNet152 feature extraction.\n")
 
-    if extract_all or get_boolean_input("Extract audio (VGGish) features? (y/n)"):
-        for dataset in datasets:
-            audio_dir = f"{dataset}/{audio_subdir}"
-            video_ids = [f.split(".")[0]
-                         for f in os.listdir(audio_dir) if f[-4:] == ".wav"]
-            feature_dir = fconf.set_dataset(dataset, fconf.VGGISH_FEATURE_DIR)
-            print(f"Extracting VGGish features for {dataset}...")
-            extract_VGGish_features(
-                video_ids,
-                vggish_slim=vggish_slim,
-                vggish_params=vggish_params,
-                vggish_input=vggish_input,
-                model_ckpt_path=f"{feature_model_dir}/vggish/vggish_model.ckpt",
-                embedding_dir=feature_dir,
-                audio_dir=audio_dir)
-        print("Finished VGGish feature extraction.\n")
+    # if extract_all or get_boolean_input("Extract audio (VGGish) features? (y/n)"):
+    #     for dataset in datasets:
+    #         audio_dir = f"{dataset}/{audio_subdir}"
+    #         video_ids = [f.split(".")[0]
+    #                      for f in os.listdir(audio_dir) if f[-4:] == ".wav"]
+    #         feature_dir = fconf.set_dataset(dataset, fconf.VGGISH_FEATURE_DIR)
+    #         print(f"Extracting VGGish features for {dataset}...")
+    #         extract_VGGish_features(
+    #             video_ids,
+    #             vggish_slim=vggish_slim,
+    #             vggish_params=vggish_params,
+    #             vggish_input=vggish_input,
+    #             model_ckpt_path=f"{feature_model_dir}/vggish/vggish_model.ckpt",
+    #             embedding_dir=feature_dir,
+    #             audio_dir=audio_dir)
+    #     print("Finished VGGish feature extraction.\n")
 
 
 if __name__ == "__main__":

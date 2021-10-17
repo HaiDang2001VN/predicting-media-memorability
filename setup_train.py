@@ -16,7 +16,7 @@ AUDIO_DIR = f"{DATASET}/Audio"
 FRAME_DIR = f"{DATASET}/Frames"
 
 # Replace with dev_video_urls.csv or test_urls.csv
-VIDEO_URLS_CSV = f"{DATASET}/video_urls.csv"
+VIDEO_URLS_CSV = f"{DATASET}/train_video_urls.csv"
 
 
 def download_video(name, url):
