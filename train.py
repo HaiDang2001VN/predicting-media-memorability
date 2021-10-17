@@ -141,7 +141,7 @@ def train_gru(features_train,
         seed=seed
     )
 
-    optimizer = Adam(lr=learning_rate, decay=learning_rate / num_epochs)
+    optimizer = Adam(learning_rate=learning_rate, decay=learning_rate / num_epochs)
 
     model.compile(
         loss="mean_squared_error",
@@ -156,18 +156,18 @@ def train_gru(features_train,
         restore_best_weights=True
     )
 
-    H = model.fit(features_train, targets_train,
+    his = model.fit(features_train, targets_train,
                   validation_data=(features_valid, targets_valid),
                   epochs=num_epochs,
-                  shuffle=False,
+                  shuffle=True,
                   batch_size=32,
                   use_multiprocessing=True,
                   workers=8,
                   callbacks=[early_stopping_monitor],
-                  verbose=False)
+                  verbose=True)
 
-    train_losses = H.history["loss"]
-    valid_losses = H.history["val_loss"]
+    train_losses = his.history["loss"]
+    valid_losses = his.history["val_loss"]
 
     return model, train_losses, valid_losses
 
