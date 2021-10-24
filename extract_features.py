@@ -3,7 +3,7 @@ import numpy as np
 import pickle
 import os
 
-# from feature_models.vggish import vggish_input, vggish_params, vggish_slim
+from feature_models.vggish import vggish_input, vggish_params, vggish_slim
 import features.config as fconf
 from features.audio import extract_VGGish_features
 from features.image import extract_resnet152_features

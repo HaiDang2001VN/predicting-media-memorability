@@ -1,5 +1,5 @@
-import numpy as np
 import os
+import numpy as np
 import tensorflow.compat.v1 as tf
 from tqdm import tqdm
 
