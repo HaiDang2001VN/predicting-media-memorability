@@ -3,19 +3,18 @@ import numpy as np
 import pickle
 import os
 
-from feature_models.vggish import vggish_input, vggish_params, vggish_slim
+# from feature_models.vggish import vggish_input, vggish_params, vggish_slim
 import features.config as fconf
 from features.audio import extract_VGGish_features
 from features.image import extract_resnet152_features
 from features.text import fit_tokenizer, extract_GLoVe_features
 from features.emotion import extract_emotions
 
-# DATASETS = ["training_set", "development_set", "testing_set"]
-DATASETS = ["training_set", "testing_set"]
+DATASETS = ["data/training_set", "data/development_set", "data/testing_set"]
 CAPTION_FILES = {
-    "training_set": "train_text_descriptions.csv",
-    # "development_set": "dev_text_descriptions.csv",
-    "testing_set": "test_text_descriptions.csv"
+    "data/training_set": "train_text_descriptions.csv",
+    "data/development_set": "dev_text_descriptions.csv",
+    "data/testing_set": "test_text_descriptions.csv"
 }
 FEATURE_MODEL_DIR = "features/"
 
@@ -40,13 +39,13 @@ def extract_features(
     extract_all = get_boolean_input(
         "Extract all features? (y/n) Otherwise extract on per-feature basis.")
 
-    if extract_all or get_boolean_input("Extract emotion features? (y/n)"):
-        for dataset in datasets:
-            feature_dir = fconf.set_dataset(dataset, fconf.EMOTION_FEATURE_DIR)
-            print(f"Extracting emotion features for {dataset}...")
-            _ = extract_emotions(
-                frame_path=f"{dataset}/{frame_subdir}", feature_dir=feature_dir)
-        print("Finished emotion feature extraction.\n")
+    # if extract_all or get_boolean_input("Extract emotion features? (y/n)"):
+    #     for dataset in datasets:
+    #         feature_dir = fconf.set_dataset(dataset, fconf.EMOTION_FEATURE_DIR)
+    #         print(f"Extracting emotion features for {dataset}...")
+    #         _ = extract_emotions(
+    #             frame_path=f"{dataset}/{frame_subdir}", feature_dir=feature_dir)
+    #     print("Finished emotion feature extraction.\n")
 
     if extract_all or get_boolean_input("Extract text (GLoVe) features? (y/n)"):
         caption_paths = [
@@ -92,15 +91,15 @@ def extract_features(
             pickle.dump(tokenizer, f, protocol=pickle.HIGHEST_PROTOCOL)
         print("Finished GLoVe feature extraction.\n")
 
-    if extract_all or get_boolean_input("Extract image (ResNet152) features? (y/n)"):
-        for dataset in datasets:
-            frame_dir = f"{dataset}/{frame_subdir}"
-            feature_dir = fconf.set_dataset(
-                dataset, fconf.RESNET152_FEATURE_DIR)
-            print(f"Extracting ResNet152 features for {dataset}...")
-            extract_resnet152_features(
-                image_dir=frame_dir, features_dir=feature_dir)
-        print("Finished ResNet152 feature extraction.\n")
+    # if extract_all or get_boolean_input("Extract image (ResNet152) features? (y/n)"):
+    #     for dataset in datasets:
+    #         frame_dir = f"{dataset}/{frame_subdir}"
+    #         feature_dir = fconf.set_dataset(
+    #             dataset, fconf.RESNET152_FEATURE_DIR)
+    #         print(f"Extracting ResNet152 features for {dataset}...")
+    #         extract_resnet152_features(
+    #             image_dir=frame_dir, features_dir=feature_dir)
+    #     print("Finished ResNet152 feature extraction.\n")
 
     # if extract_all or get_boolean_input("Extract audio (VGGish) features? (y/n)"):
     #     for dataset in datasets:
