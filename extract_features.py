@@ -10,11 +10,11 @@ from features.image import extract_resnet152_features
 from features.text import fit_tokenizer, extract_GLoVe_features
 from features.emotion import extract_emotions
 
-DATASETS = ["data/training_set", "data/development_set", "data/testing_set"]
+DATASETS = ["training_set", "development_set", "testing_set"]
 CAPTION_FILES = {
-    "data/training_set": "train_text_descriptions.csv",
-    "data/development_set": "dev_text_descriptions.csv",
-    "data/testing_set": "test_text_descriptions.csv"
+    "training_set": "train_text_descriptions.csv",
+    "development_set": "dev_text_descriptions.csv",
+    "testing_set": "test_text_descriptions.csv"
 }
 FEATURE_MODEL_DIR = "features/"
 

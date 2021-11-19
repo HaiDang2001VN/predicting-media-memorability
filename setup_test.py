@@ -9,7 +9,7 @@ import cv2
 from features.config import NUM_FRAMES_PER_VIDEO
 
 # Replace with development_set or testing_set
-DATASET = "data/testing_set"
+DATASET = "testing_set"
 
 VIDEO_DIR = f"{DATASET}/Videos"
 AUDIO_DIR = f"{DATASET}/Audio"
