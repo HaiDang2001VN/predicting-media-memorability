@@ -36,8 +36,8 @@ def extract_features(
         feature_model_dir=FEATURE_MODEL_DIR,
         audio_subdir="Audio"):
 
-    extract_all = get_boolean_input(
-        "Extract all features? (y/n) Otherwise extract on per-feature basis.")
+    # extract_all = get_boolean_input(
+    #     "Extract all features? (y/n) Otherwise extract on per-feature basis.")
 
     # if extract_all or get_boolean_input("Extract emotion features? (y/n)"):
     #     for dataset in datasets:
@@ -47,49 +47,49 @@ def extract_features(
     #             frame_path=f"{dataset}/{frame_subdir}", feature_dir=feature_dir)
     #     print("Finished emotion feature extraction.\n")
 
-    if extract_all or get_boolean_input("Extract text (GLoVe) features? (y/n)"):
-        caption_paths = [
-            f"{dataset}/{caption_files[dataset]}" for dataset in datasets]
-        all_caption_data = pd.concat(
-            [pd.read_csv(path) for path in caption_paths])
-        all_video_ids = all_caption_data["video_id"]
-        all_captions = all_caption_data["description"]
+    # if extract_all or get_boolean_input("Extract text (GLoVe) features? (y/n)"):
+    caption_paths = [
+        f"{dataset}/{caption_files[dataset]}" for dataset in datasets]
+    all_caption_data = pd.concat(
+        [pd.read_csv(path) for path in caption_paths])
+    all_video_ids = all_caption_data["video_id"]
+    all_captions = all_caption_data["description"]
 
-        caption_count = all_video_ids.groupby(all_video_ids).count()
-        print(
-            f"\tFound {len(all_captions)} captions for {len(all_video_ids.unique())} videos")
-        print("\tAvg num of captions per video:", np.mean(caption_count))
-        print("\tMax num of captions per video:", np.max(caption_count))
-        print("\tMin num of captions per video:", np.min(caption_count))
+    caption_count = all_video_ids.groupby(all_video_ids).count()
+    print(
+        f"\tFound {len(all_captions)} captions for {len(all_video_ids.unique())} videos")
+    print("\tAvg num of captions per video:", np.mean(caption_count))
+    print("\tMax num of captions per video:", np.max(caption_count))
+    print("\tMin num of captions per video:", np.min(caption_count))
 
-        sequence_lengths = [len(caption.split()) for caption in all_captions]
-        max_sequence_length = np.max(sequence_lengths)
+    sequence_lengths = [len(caption.split()) for caption in all_captions]
+    max_sequence_length = np.max(sequence_lengths)
 
-        print("Max sequence length:", max_sequence_length)
-        print("Min sequence length:", np.min(sequence_lengths))
-        print("Avg sequence length:", np.mean(sequence_lengths))
+    print("Max sequence length:", max_sequence_length)
+    print("Min sequence length:", np.min(sequence_lengths))
+    print("Avg sequence length:", np.mean(sequence_lengths))
 
-        print("Fitting tokenizer...")
-        tokenizer = fit_tokenizer(all_captions)
+    print("Fitting tokenizer...")
+    tokenizer = fit_tokenizer(all_captions)
 
-        for dataset, caption_path in zip(datasets, caption_paths):
-            print(f"Extracting GLoVe features from {caption_path}...")
-            caption_data = pd.read_csv(caption_path)
-            video_ids = caption_data["video_id"]
-            captions = caption_data["description"]
-            feature_dir = fconf.set_dataset(dataset, fconf.GLOVE_FEATURE_DIR)
-            extract_GLoVe_features(
-                video_ids=video_ids,
-                captions=captions,
-                tokenizer=tokenizer,
-                max_sequence_length=max_sequence_length,
-                feature_dir=feature_dir)
+    for dataset, caption_path in zip(datasets, caption_paths):
+        print(f"Extracting GLoVe features from {caption_path}...")
+        caption_data = pd.read_csv(caption_path)
+        video_ids = caption_data["video_id"]
+        captions = caption_data["description"]
+        feature_dir = fconf.set_dataset(dataset, fconf.GLOVE_FEATURE_DIR)
+        extract_GLoVe_features(
+            video_ids=video_ids,
+            captions=captions,
+            tokenizer=tokenizer,
+            max_sequence_length=max_sequence_length,
+            feature_dir=feature_dir)
 
-        tokenizer_pickle_path = f"{feature_model_dir}/caption_tokenizer.pickle"
-        print(f"Saving tokenizer at {tokenizer_pickle_path}")
-        with open(tokenizer_pickle_path, "wb") as f:
-            pickle.dump(tokenizer, f, protocol=pickle.HIGHEST_PROTOCOL)
-        print("Finished GLoVe feature extraction.\n")
+    tokenizer_pickle_path = f"{feature_model_dir}/caption_tokenizer.pickle"
+    print(f"Saving tokenizer at {tokenizer_pickle_path}")
+    with open(tokenizer_pickle_path, "wb") as f:
+        pickle.dump(tokenizer, f, protocol=pickle.HIGHEST_PROTOCOL)
+    print("Finished GLoVe feature extraction.\n")
 
     # if extract_all or get_boolean_input("Extract image (ResNet152) features? (y/n)"):
     #     for dataset in datasets:
