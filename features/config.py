@@ -21,7 +21,7 @@ EMOTIONS = ['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral']
 C3D_FEATURE_DIR = f"{DATASET}/Features/C3D"
 
 # Text
-GLOVE_WORD_EMBEDDINGS_PATH = "data/glove.6B/glove.6B.300d.txt"
+GLOVE_WORD_EMBEDDINGS_PATH = "glove.6B/glove.6B.300d.txt"
 GLOVE_WORD_EMBEDDING_DIM = 300
 GLOVE_FEATURE_DIR = f"{DATASET}/Features/GloVe"
 BOW_FEATURE_DIR = f"{DATASET}/Features/BoW"
